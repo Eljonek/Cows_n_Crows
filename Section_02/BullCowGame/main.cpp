@@ -6,12 +6,12 @@ using namespace std;
 void PrintIntro();
 string GetGuessAndPrintBack();
 
-// entry
+//entry point
 int main()
 {
 	PrintIntro();
 
-	//loop for the numbers of turns
+	// looping turns
 	constexpr int NUMBER_OF_TURNS = 5;
 	for (int count = 1; count <= NUMBER_OF_TURNS; count++)
 	{
@@ -19,29 +19,28 @@ int main()
 		cout << endl;
 	}
 
-	cout << endl;
 	return 0;
 }
 
-//introduction
-void PrintIntro() {
-	constexpr int WORD_LENGHT = 9;
-	cout << "Witaj w Bykach i Krowach, zabawnej grze s³ownej.\n";
-	cout << "Czy odgadniesz s³owo, na " << WORD_LENGHT;
-	cout << "liter, izogram, o którym myœlê?\n";
+void PrintIntro() 
+{
+	constexpr int WORD_LENGTH = 5;
+	cout << "Welcome to Bulls and Cows, a fun word game.\n";
+	cout << "Can you guess the " << WORD_LENGTH;
+	cout << " letter isogram I'm thinking of?\n";
 	cout << endl;
 	return;
 }
 
-
-string GetGuessAndPrintBack();
+//player's guess
+string GetGuessAndPrintBack() 
 {
-	//player's guess
-	cout << "Wpisz swoj¹ propozycjê ";
-	string Guess = " ";
+	//introduction
+	cout << "Enter your guess: ";
+	string Guess = "";
 	getline(cin, Guess);
 
-	//print the guess back
-	cout << "Twoja odpowiedŸ: " << Guess << endl;
+	//print guess back to player
+	cout << "Your guess was: " << Guess << endl;
 	return Guess;
 }
