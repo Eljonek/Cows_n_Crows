@@ -4,22 +4,22 @@
 using namespace std;
 
 void PrintIntro();
-string GetGuessAndPrintBack();
+void PlayGame();
+string GetGuess();
+bool AskToPlayAgain();
 
 //entry point
 int main()
 {
-	PrintIntro();
+	bool bPlayAgain = false;
+	do {
+		PrintIntro();
+		PlayGame();
+		bPlayAgain = AskToPlayAgain();
+	} 
+	while (bPlayAgain);
 
-	// looping turns
-	constexpr int NUMBER_OF_TURNS = 5;
-	for (int count = 1; count <= NUMBER_OF_TURNS; count++)
-	{
-		GetGuessAndPrintBack();
-		cout << endl;
-	}
-
-	return 0;
+	return 0; //exits 
 }
 
 void PrintIntro() 
@@ -32,15 +32,34 @@ void PrintIntro()
 	return;
 }
 
+void PlayGame()
+{	
+	// looping turns
+	constexpr int NUMBER_OF_TURNS = 5;
+	for (int count = 1; count <= NUMBER_OF_TURNS; count++)
+	{
+		string Guess = GetGuess();
+		GetGuess();
+		cout << "Your guess was: " << Guess << endl;
+		cout << endl;
+	}
+}
+
 //player's guess
-string GetGuessAndPrintBack() 
+string GetGuess() 
 {
 	//introduction
 	cout << "Enter your guess: ";
 	string Guess = "";
 	getline(cin, Guess);
-
-	//print guess back to player
-	cout << "Your guess was: " << Guess << endl;
 	return Guess;
+}
+
+bool AskToPlayAgain()
+{
+	cout << "Do you want to play again? (y/n)";
+	string Response = "";
+	getline(cin, Response);
+
+	return (Response[0] == 'y') || (Response[0] == 'Y');
 }
