@@ -2,11 +2,13 @@
 This acts as the view in a MVC pattern, and is responsible for all
 user interaction. For game logic see the FBullCowGame class.
 */
+#pragma once
 
 #include <iostream>
 #include <string>	
 #include "FBullCowGame.h"
 
+//Unreal friendly names
 using FText = std::string;
 using int32 = int;
 
@@ -36,14 +38,22 @@ int main()
 // introduction
 void PrintIntro()
 {
-	std::cout << "\n\n Witaj w gêsiach i kaczkach! Fantastycznej grze s³ownej.\n";
+	std::cout << "Witaj w gêsiach i kaczkach! Fantastycznej grze s³ownej.\n";
+	std::cout << std::endl;
+	std::cout << "               ..  " << std::endl;
+	std::cout << "              ( '`<" << std::endl;
+	std::cout << "               )(               ,_" << std::endl;
+	std::cout << "        ( ----'  '.     ,      ( o <" << std::endl;
+	std::cout << "        (         ;    {`'=, ___) (" << std::endl;
+	std::cout << "         (_______,'     \  ,_.-   )" << std::endl;
+	std::cout << "    ~^~^~^~^~^~^~^~^~^~^~~^~^~^~^~^~^~^~" << std::endl;
 	std::cout << "Czy bêdziesz godzien do³¹czyæ do stada i odgadniesz wyraz sk³adaj¹cy siê z " << BCGame.GetHiddenWordLength();
 	std::cout << " liter?\n";
 	std::cout << std::endl;
 	return;
 }
 
-
+// plays a single complete game
 void PlayGame()
 {
 	BCGame.Reset();
@@ -73,7 +83,8 @@ FText GetValidGuess()
 	do {
 		// get player's guess
 		int32 CurrentTry = BCGame.GetCurrentTry();
-		std::cout << "Próba " << CurrentTry << ". Wstaw swoj¹ propozycjê: ";
+		std::cout << "Próba " << CurrentTry << " z " << BCGame.GetMaxTries();
+		std::cout << " Wpisz swoj¹ propozycjê: ";
 
 		std::getline(std::cin, Guess);
 
@@ -81,19 +92,18 @@ FText GetValidGuess()
 		Status = BCGame.CheckGuessValidity(Guess);
 		switch (Status) {
 		case EGuessStatus::Wrong_Length:
-			std::cout << "Nie umiesz liczyæ? Wstaw " << BCGame.GetHiddenWordLength() << " literowe s³owo.\n";
+			std::cout << "Nie umiesz liczyæ? Wstaw " << BCGame.GetHiddenWordLength() << " literowe s³owo.\n\n";
 			break;
 		case EGuessStatus::Not_Isogram:
-			std::cout << "PATA£ACHU! Litery w s³owie nie mog¹ siê powtarzaæ.\n";
+			std::cout << "PATA£ACHU! Litery w s³owie nie mog¹ siê powtarzaæ.\n\n";
 			break;
 		case EGuessStatus::Not_Lowercase:
-			std::cout << "BEBOKU! Pisz ma³ymi literami!\n";
+			std::cout << "BEBOKU! Pisz ma³ymi literami!\n\n";
 			break;
 		default:
 			// assume the guess is valid
 			break;
 		}
-		std::cout << std::endl;
 	} while (Status != EGuessStatus::OK); // keep looping until we get no errors
 	return Guess;
 }
@@ -112,5 +122,9 @@ void PrintGameSummary() {
 	}
 	else {
 		std::cout << "Pff... Jesteœ tylko zwyk³¹ kur¹...\n";
+		std::cout << "     _   m" << std::endl;
+		std::cout << "   ,`.} /'>" << std::endl;
+		std::cout << "   (` }<_/" << std::endl;
+		std::cout << "     `<<" << std::endl;
 	}
 }

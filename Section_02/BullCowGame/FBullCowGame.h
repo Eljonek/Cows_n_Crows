@@ -1,16 +1,18 @@
+/* Game Logics
+The game is a simple 'guess the word' game based on Mastermind
+*/
+
 #pragma once
 #include <string>
 
 using FString = std::string;
 using int32 = int;
 
-// all values initialised to zero
 struct FBullCowCount 
 {
 	int32 Bulls = 0;
 	int32 Cows = 0;
 };
-
 
 enum class EGuessStatus
 {
@@ -20,7 +22,6 @@ enum class EGuessStatus
 	Wrong_Length,
 	Not_Lowercase
 };
-
 
 class FBullCowGame
 {
@@ -33,14 +34,14 @@ public:
 	bool IsGameWon() const;
 	EGuessStatus CheckGuessValidity(FString) const;
 
-	void Reset(); // TODO maka a more rich return value
+	void Reset();
 	FBullCowCount SubmitValidGuess(FString);
 
 private:
 	// see constructor
 	int32 MyCurrentTry;
-	int32 MyMaxTries;
 	FString MyHiddenWord;
 	bool bGameIsWon;
 	bool IsIsogram(FString) const;
+	bool IsLowercase(FString) const;
 };
