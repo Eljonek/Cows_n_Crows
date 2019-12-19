@@ -14,6 +14,7 @@ void PrintIntro();
 void PlayGame();
 FText GetValidGuess();
 bool AskToPlayAgain();
+void PrintGameSummary();
 
 FBullCowGame BCGame; // new game instance
 
@@ -35,7 +36,7 @@ int main()
 // introduction
 void PrintIntro()
 {
-	std::cout << "Witaj w gêsiach i kaczkach! Fantastycznej grze s³ownej.\n";
+	std::cout << "\n\n Witaj w gêsiach i kaczkach! Fantastycznej grze s³ownej.\n";
 	std::cout << "Czy bêdziesz godzien do³¹czyæ do stada i odgadniesz wyraz sk³adaj¹cy siê z " << BCGame.GetHiddenWordLength();
 	std::cout << " liter?\n";
 	std::cout << std::endl;
@@ -48,29 +49,32 @@ void PlayGame()
 	BCGame.Reset();
 	int32 MaxTries = BCGame.GetMaxTries();
 
-	// loop for the number of turns asking for guesses
-	for (int32 count = 1; count <= MaxTries; count++) { // TODO change from FOR to WHILE
+	// loop asking for guesses while the game is NOT won
+	// and there are still tries remaining
+	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries) {
 		FText Guess = GetValidGuess();
 
 		// submit valid guess to the game, receive counts
-		FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
+		FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
 
 		std::cout << "Gêsi = " << BullCowCount.Bulls;
-		std::cout << "|| Kaczki = " << BullCowCount.Cows << "\n\n";
+		std::cout << " || Kaczki = " << BullCowCount.Cows << "\n\n";
 	}
 
-	// TODO summarise game
+	PrintGameSummary();
+	return;
 }
 
 // loop until the user gives a valid guess
 FText GetValidGuess()
 {
+	FText Guess = "";
 	EGuessStatus Status = EGuessStatus::Invalid_Status;
 	do {
 		// get player's guess
 		int32 CurrentTry = BCGame.GetCurrentTry();
 		std::cout << "Próba " << CurrentTry << ". Wstaw swoj¹ propozycjê: ";
-		FText Guess = "";
+
 		std::getline(std::cin, Guess);
 
 		// check status and give feedback
@@ -86,16 +90,27 @@ FText GetValidGuess()
 			std::cout << "BEBOKU! Pisz ma³ymi literami!\n";
 			break;
 		default:
-			return Guess;
+			// assume the guess is valid
+			break;
 		}
 		std::cout << std::endl;
 	} while (Status != EGuessStatus::OK); // keep looping until we get no errors
+	return Guess;
 }
 
 bool AskToPlayAgain()
 {
-	std::cout << "Jesteœ tylko zwyk³¹ kur¹... Nie jesteœ godzien do³¹czyæ do stada. Chcesz spróbowaæ ponownie? (t/n) ";
+	std::cout << "Chcesz spróbowaæ ponownie? (t/n) ";
 	FText Response = "";
 	std::getline(std::cin, Response);
 	return (Response[0] == 't') || (Response[0] == 'T');
+}
+
+void PrintGameSummary() {
+	if (BCGame.IsGameWon()) {
+		std::cout << "GRATULACJE! Mo¿esz byæ czêœci¹ stada! Prawdziwy z Ciebie indyk!\n";
+	}
+	else {
+		std::cout << "Pff... Jesteœ tylko zwyk³¹ kur¹...\n";
+	}
 }
